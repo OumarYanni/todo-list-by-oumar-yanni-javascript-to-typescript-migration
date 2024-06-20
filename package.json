@@ -1,15 +1,20 @@
 {
-  "name": "dyma",
+  "name": "todo-list-by-oumar-yanni-javascript-to-typescript-migration",
   "version": "1.0.0",
-  "description": "",
+  "description": "FR : Migration d'une todo list codée en javascript vers typescript | EN : Migrating a javascript todo list to typescript",
   "type": "module",
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "typescript",
+    "javascript",
+    "migration"
+  ],
+  "author": "Oumar Yanni",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^5.4.5",
