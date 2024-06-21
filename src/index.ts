@@ -1,17 +1,17 @@
-import "./style.css";
+import "./style/style.css";
+import { Todo } from "./interfaces/todo.interface";
 
-const ul = document.querySelector("ul") as HTMLUListElement | null;
-const form = document.querySelector("form") as HTMLFormElement | null;
-const input = document.querySelector("form > input") as HTMLInputElement | null;
+const ul: HTMLUListElement = document.querySelector("ul")!;
+const form: HTMLFormElement = document.querySelector("form")!;
+const input: HTMLInputElement =
+  document.querySelector<HTMLInputElement>("form > input")!;
 
-if (form && input) {
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const value = input.value;
-    input.value = "";
-    addTodo(value);
-  });
-}
+form.addEventListener("submit", (event: Event): void => {
+  event.preventDefault();
+  const value = input.value;
+  input.value = "";
+  addTodo(value);
+});
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && todos.find((t) => t.editMode)) {
@@ -25,12 +25,6 @@ document.addEventListener("keydown", (event) => {
     }
   }
 });
-
-interface Todo {
-  text: string;
-  done: boolean;
-  editMode: boolean;
-}
 
 const todos: Todo[] = [
   {
@@ -46,7 +40,7 @@ const todos: Todo[] = [
 ];
 
 const displayTodo = () => {
-  const todosNode = todos.map((todo, index) => {
+  const todosNode: HTMLLIElement[] = todos.map((todo: Todo, index: number) => {
     if (todo.editMode) {
       return createTodoEditElement(todo, index);
     } else {
@@ -54,25 +48,23 @@ const displayTodo = () => {
     }
   });
 
-  if (ul) {
-    ul.innerHTML = "";
-    ul.append(...todosNode);
-  }
+  ul.innerHTML = "";
+  ul.append(...todosNode);
 };
 
-const createTodoElement = (todo: Todo, index: number) => {
-  const li = document.createElement("li");
-  const buttonDelete = document.createElement("button");
+const createTodoElement = (todo: Todo, index: number): HTMLLIElement => {
+  const li: HTMLLIElement = document.createElement("li");
+  const buttonDelete: HTMLButtonElement = document.createElement("button");
   buttonDelete.innerHTML = "Supprimer";
   buttonDelete.classList.add("danger");
-  const buttonEdit = document.createElement("button");
+  const buttonEdit: HTMLButtonElement = document.createElement("button");
   buttonEdit.innerHTML = "Edit";
   buttonEdit.classList.add("primary");
-  buttonDelete.addEventListener("click", (event) => {
+  buttonDelete.addEventListener("click", (event: MouseEvent) => {
     event.stopPropagation();
     deleteTodo(index);
   });
-  buttonEdit.addEventListener("click", (event) => {
+  buttonEdit.addEventListener("click", (event: MouseEvent) => {
     event.stopPropagation();
     toggleEditMode(index);
   });
@@ -96,26 +88,26 @@ const createTodoElement = (todo: Todo, index: number) => {
 };
 
 const createTodoEditElement = (todo: Todo, index: number) => {
-  const li = document.createElement("li");
-  const input = document.createElement("input");
+  const li: HTMLLIElement = document.createElement("li");
+  const input: HTMLInputElement = document.createElement("input");
   input.type = "text";
   input.value = todo.text;
-  input.addEventListener("keydown", (event) => {
+  input.addEventListener("keydown", (event: KeyboardEvent) => {
     if (event.key === "Enter") {
       editTodo(index, input);
     }
   });
-  const buttonSave = document.createElement("button");
+  const buttonSave: HTMLButtonElement = document.createElement("button");
   buttonSave.innerHTML = "Save";
   buttonSave.classList.add("success");
-  const buttonCancel = document.createElement("button");
+  const buttonCancel: HTMLButtonElement = document.createElement("button");
   buttonCancel.innerHTML = "Cancel";
   buttonCancel.classList.add("danger");
-  buttonCancel.addEventListener("click", (event) => {
+  buttonCancel.addEventListener("click", (event: MouseEvent) => {
     event.stopPropagation();
     toggleEditMode(index);
   });
-  buttonSave.addEventListener("click", (event) => {
+  buttonSave.addEventListener("click", () => {
     editTodo(index, input);
   });
   li.append(input, buttonSave, buttonCancel);
@@ -123,7 +115,7 @@ const createTodoEditElement = (todo: Todo, index: number) => {
   return li;
 };
 
-const addTodo = (text: string) => {
+const addTodo = (text: string): void => {
   text = text.trim();
   if (text) {
     todos.push({
@@ -135,22 +127,22 @@ const addTodo = (text: string) => {
   }
 };
 
-const deleteTodo = (index: number) => {
+const deleteTodo = (index: number): void => {
   todos.splice(index, 1);
   displayTodo();
 };
 
-const toggleTodo = (index: number) => {
+const toggleTodo = (index: number): void => {
   todos[index].done = !todos[index].done;
   displayTodo();
 };
 
-const toggleEditMode = (index: number) => {
+const toggleEditMode = (index: number): void => {
   todos[index].editMode = !todos[index].editMode;
   displayTodo();
 };
 
-const editTodo = (index: number, input: HTMLInputElement) => {
+const editTodo = (index: number, input: HTMLInputElement): void => {
   const value = input.value;
   todos[index].text = value;
   todos[index].editMode = false;
